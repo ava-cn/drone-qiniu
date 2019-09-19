@@ -1,5 +1,5 @@
 # drone-qiniu
-
+上传文件到七牛的drone插件
 
 ## build
 ```

@@ -1,12 +1,12 @@
 # drone-qiniu
 上传文件到七牛的drone插件
 
-## build
+## Build
 ```
 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o qiniu
 ```
 
-## test
+## Params
 
 ```
 SET ACCESS_KEY=xxx

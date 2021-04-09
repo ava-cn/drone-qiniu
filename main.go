@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"os"
 )
 
@@ -25,36 +25,35 @@ func main() {
 	}
 
 	c.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:   "access-key",
-			Usage:  "qiniu access key",
-			EnvVar: "ACCESS_KEY,PLUGIN_ACCESS_KEY",
+		&cli.StringFlag{
+			Name:    "access-key",
+			Usage:   "qiniu access key",
+			EnvVars: []string{"ACCESS_KEY", "PLUGIN_ACCESS_KEY"},
 		},
-		cli.StringFlag{
-			Name:   "secret-key",
-			Usage:  "qiniu secret key",
-			EnvVar: "SECRET_KEY,PLUGIN_SECRET_KEY",
+		&cli.StringFlag{
+			Name:    "secret-key",
+			Usage:   "qiniu secret key",
+			EnvVars: []string{"SECRET_KEY", "PLUGIN_SECRET_KEY"},
 		},
-		cli.StringFlag{
-			Name:   "zone",
-			Usage:  "bucket zone",
-			EnvVar: "ZONE,PLUGIN_ZONE",
-			Value:  "huadong",
+		&cli.StringFlag{
+			Name:    "zone",
+			Usage:   "bucket zone",
+			EnvVars: []string{"ZONE", "PLUGIN_ZONE"},
 		},
-		cli.StringFlag{
-			Name:   "bucket",
-			Usage:  "bucket name",
-			EnvVar: "BUCKET,PLUGIN_BUCKET",
+		&cli.StringFlag{
+			Name:    "bucket",
+			Usage:   "bucket name",
+			EnvVars: []string{"BUCKET", "PLUGIN_BUCKET"},
 		},
-		cli.StringFlag{
-			Name:   "prefix",
-			Usage:  "upload key prefix",
-			EnvVar: "PREFIX,PLUGIN_PREFIX",
+		&cli.StringFlag{
+			Name:    "prefix",
+			Usage:   "upload key prefix",
+			EnvVars: []string{"PREFIX", "PLUGIN_PREFIX"},
 		},
-		cli.StringFlag{
-			Name:   "path",
-			Usage:  "file path",
-			EnvVar: "PATH,PLUGIN_PATH",
+		&cli.StringFlag{
+			Name:    "path",
+			Usage:   "file path",
+			EnvVars: []string{"PATH", "PLUGIN_PATH"},
 		},
 	}
 

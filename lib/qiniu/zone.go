@@ -1,6 +1,6 @@
 package qiniu
 
-import "github.com/qiniu/api.v7/storage"
+import "github.com/qiniu/go-sdk/v7/storage"
 
 var zoneMap = map[string]*storage.Zone{
 	"huadong":  &storage.ZoneHuadong,

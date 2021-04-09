@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/bysir-zl/drone-qiniu/lib/qiniu"
+	"github.com/zbysir/drone-qiniu/lib/qiniu"
 )
 
 type Plugin struct {

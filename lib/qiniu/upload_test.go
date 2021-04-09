@@ -1,7 +1,7 @@
 package qiniu
 
 import (
-	"github.com/qiniu/api.v7/storage"
+	"github.com/qiniu/go-sdk/v7/storage"
 	"testing"
 )
 

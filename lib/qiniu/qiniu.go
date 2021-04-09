@@ -1,6 +1,6 @@
 package qiniu
 
-import "github.com/qiniu/api.v7/auth/qbox"
+import "github.com/qiniu/go-sdk/v7/auth/qbox"
 
 type Qiniu struct {
 	mac *qbox.Mac

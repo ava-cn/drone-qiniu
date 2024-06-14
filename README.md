@@ -16,3 +16,22 @@ SET BUCKET=nameimtest
 SET PREFIX=drone/
 SET PATH=e:\drone-qiniu
 ```
+
+## Usage
+```
+steps:
+  - name: upload-static
+    image: bysir/drone-qiniu:master
+    pull: if-not-exists
+    privileged: true
+    settings:
+      access_key:
+        from_secret: qiniu_access_key
+      SECRET_KEY:
+        from_secret: qiniu_secret_key
+      zone: huadong
+      bucket: creght-sys
+      prefix: render/
+      path: ./internal/render/static
+
+```

@@ -2,6 +2,7 @@ package qiniu
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,7 +27,12 @@ type PutRsp struct {
 
 // 上传一个文件夹
 func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string, dirPath string) (err error) {
+	fmt.Printf("upload dir: '%s' to bucket '%s', prefix: '%s'\n", dirPath, bucket, keyPrefix)
+
 	err = filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 		if info.IsDir() {
 			return nil
 		}

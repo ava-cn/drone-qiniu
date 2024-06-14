@@ -1,4 +1,8 @@
 name: Docker Image CI
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: docker.io
+  IMAGE_NAME: "bysir/drone-qiniu"
 
 on:
   push:

@@ -11,7 +11,7 @@ type Plugin struct {
 	Zone      string
 	Bucket    string
 	Prefix    string
-	Path      string
+	Dir       string
 }
 
 func (p Plugin) Exec() error {
@@ -22,5 +22,5 @@ func (p Plugin) Exec() error {
 		return errors.New("bad zone")
 	}
 
-	return u.UploadDir(zone, p.Bucket, p.Prefix, p.Path)
+	return u.UploadDir(zone, p.Bucket, p.Prefix, p.Dir)
 }

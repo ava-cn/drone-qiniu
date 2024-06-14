@@ -18,7 +18,7 @@ func main() {
 			Bucket:    ctx.String("bucket"),
 			Zone:      ctx.String("zone"),
 			Prefix:    ctx.String("prefix"),
-			Path:      ctx.String("path"),
+			Dir:       ctx.String("dir"),
 		}
 
 		return p.Exec()
@@ -51,9 +51,9 @@ func main() {
 			EnvVars: []string{"PREFIX", "PLUGIN_PREFIX"},
 		},
 		&cli.StringFlag{
-			Name:    "path",
-			Usage:   "file path",
-			EnvVars: []string{"PATH", "PLUGIN_PATH"},
+			Name:    "dir",
+			Usage:   "local dir",
+			EnvVars: []string{"DIR", "PLUGIN_DIR"},
 		},
 	}
 

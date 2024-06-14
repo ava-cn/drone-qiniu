@@ -3,11 +3,10 @@ package qiniu
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
-	"strings"
-
-	"io"
+	"time"
 
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
@@ -25,7 +24,7 @@ type PutRsp struct {
 	Bucket string
 }
 
-// 上传一个文件夹
+// UploadDir 上传一个文件夹
 func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string, dirPath string) (err error) {
 	fmt.Printf("upload dir: '%s' to bucket '%s', prefix: '%s'\n", dirPath, bucket, keyPrefix)
 
@@ -37,16 +36,19 @@ func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string,
 			return nil
 		}
 
-		// 相对路径
-		reaPath := strings.Replace(path, dirPath, "", -1)
-		reaPath = strings.Trim(reaPath, string(os.PathSeparator))
+		reaPath, err := filepath.Rel(dirPath, path)
+		if err != nil {
+			return err
+		}
 
-		// for windows
-		// 将分隔符替换为/
-		reaPath = strings.Replace(reaPath, string(os.PathSeparator), "/", -1)
-
+		start := time.Now()
 		_, err = u.UploadFile(zone, bucket, keyPrefix+reaPath, path)
-		return err
+		if err != nil {
+			return fmt.Errorf("upload file '%s' error: %w", keyPrefix+reaPath, err)
+		}
+		fmt.Printf("uploaded file '%s' success, spend time: %v\n", keyPrefix+reaPath, time.Since(start))
+
+		return nil
 	})
 	if err != nil {
 		return

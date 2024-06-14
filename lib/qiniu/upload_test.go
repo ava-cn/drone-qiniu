@@ -6,8 +6,8 @@ import (
 )
 
 func TestUploadDir(t *testing.T) {
-	u := NewQiniu("I50Yj4ceahNUfdGxS-7p5KrnWiZF18APP32t59jV", "bIdalJ61Q_S32R5CLzZw3-4DCL2YBQpvOqk-BRjW").Uploader()
-	err := u.UploadDir(&storage.ZoneHuadong, "nameimtest", "drone/", `E:\tmp\cdn-file\baidu\share\api`)
+	u := NewQiniu("", "").Uploader()
+	err := u.UploadDir(&storage.ZoneHuadong, "nameimtest", "test2/", `../qiniu/`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -16,7 +16,7 @@ func TestUploadDir(t *testing.T) {
 }
 
 func TestUploadFile(t *testing.T) {
-	u := NewQiniu("I50Yj4ceahNUfdGxS-7p5KrnWiZF18APP32t59jV", "bIdalJ61Q_S32R5CLzZw3-4DCL2YBQpvOqk-BRjW").Uploader()
+	u := NewQiniu("", "").Uploader()
 	_, err := u.UploadFile(&storage.ZoneHuadong, "nameimtest", "drone/", `Z:\go_path\src\github.com\bysir-zl\drone-qiniu\Dockerfile`)
 	if err != nil {
 		t.Fatal(err)

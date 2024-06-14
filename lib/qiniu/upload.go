@@ -56,13 +56,14 @@ func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string,
 	return
 }
 
-// 服务端表单直传 + 自定义回 JSON
+// UploadFile 服务端表单直传 + 自定义回  JSON
 // key: 自定义上传文件名称 可以说是时间+string.后缀的形式
 // localFile: 填入你本地图片的绝对地址，你也可以把图片放入项目文件中
 func (u Uploader) UploadFile(zone *storage.Zone, bucket string, key string, localFile string) (ret PutRsp, err error) {
 	// 上传文件自定义返回值结构体
 	putPolicy := storage.PutPolicy{
-		Scope:      bucket,
+		// 覆盖上传，参见：https://developer.qiniu.com/kodo/1206/put-policy
+		Scope:      fmt.Sprintf("%s:%s", bucket, key),
 		ReturnBody: `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)"}`,
 	}
 	upToken := putPolicy.UploadToken(u.mac)

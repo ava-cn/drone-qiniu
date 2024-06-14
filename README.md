@@ -32,6 +32,6 @@ steps:
       zone: huadong
       bucket: creght-sys
       prefix: render/
-      path: ./internal/render/static
+      dir: ./internal/render/static
 
 ```

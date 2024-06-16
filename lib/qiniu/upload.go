@@ -3,13 +3,14 @@ package qiniu
 import (
 	"context"
 	"fmt"
+	"github.com/dustin/go-humanize"
+	"github.com/qiniu/go-sdk/v7/auth/qbox"
+	"github.com/qiniu/go-sdk/v7/storage"
 	"io"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
-
-	"github.com/qiniu/go-sdk/v7/auth/qbox"
-	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 type Uploader struct {
@@ -24,9 +25,40 @@ type PutRsp struct {
 	Bucket string
 }
 
+type Assets struct {
+	Path string
+	Key  string
+}
+
 // UploadDir 上传一个文件夹
-func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string, dirPath string) (err error) {
-	fmt.Printf("upload dir: '%s' to bucket '%s', prefix: '%s'\n", dirPath, bucket, keyPrefix)
+func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string, dirPath string, parallel int) (err error) {
+	if parallel == 0 {
+		parallel = 5
+	}
+	fmt.Printf("upload dir: '%s' to bucket '%s', prefix: '%s', parallel: '%d'\n", dirPath, bucket, keyPrefix, parallel)
+
+	as := make(chan Assets, 10)
+
+	// 上传
+	var wg sync.WaitGroup
+	for i := 0; i < parallel; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for item := range as {
+				if err != nil {
+					return
+				}
+				start := time.Now()
+				rsp, e := u.UploadFile(zone, bucket, item.Key, item.Path)
+				if e != nil {
+					err = fmt.Errorf("upload file '%s' error: %w", item.Key, err)
+					return
+				}
+				fmt.Printf("uploaded file '%s' success, size: %s, spend time: %v\n", item.Key, humanize.IBytes(uint64(rsp.Fsize)), time.Since(start))
+			}
+		}()
+	}
 
 	err = filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -41,19 +73,19 @@ func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string,
 			return err
 		}
 
-		start := time.Now()
-		_, err = u.UploadFile(zone, bucket, keyPrefix+reaPath, path)
-		if err != nil {
-			return fmt.Errorf("upload file '%s' error: %w", keyPrefix+reaPath, err)
+		as <- Assets{
+			Path: path,
+			Key:  keyPrefix + reaPath,
 		}
-		fmt.Printf("uploaded file '%s' success, spend time: %v\n", keyPrefix+reaPath, time.Since(start))
 
 		return nil
 	})
 	if err != nil {
 		return
 	}
-	return
+
+	wg.Wait()
+	return err
 }
 
 // UploadFile 服务端表单直传 + 自定义回  JSON

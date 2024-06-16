@@ -12,6 +12,7 @@ type Plugin struct {
 	Bucket    string
 	Prefix    string
 	Dir       string
+	Parallel  int
 }
 
 func (p Plugin) Exec() error {
@@ -22,5 +23,5 @@ func (p Plugin) Exec() error {
 		return errors.New("bad zone")
 	}
 
-	return u.UploadDir(zone, p.Bucket, p.Prefix, p.Dir)
+	return u.UploadDir(zone, p.Bucket, p.Prefix, p.Dir, p.Parallel)
 }

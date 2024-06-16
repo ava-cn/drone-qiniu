@@ -7,7 +7,7 @@ import (
 
 func TestUploadDir(t *testing.T) {
 	u := NewQiniu("", "").Uploader()
-	err := u.UploadDir(&storage.ZoneHuadong, "nameimtest", "test/", `../qiniu/`)
+	err := u.UploadDir(&storage.ZoneHuadong, "nameimtest", "test/", `../qiniu/`, 1)
 	if err != nil {
 		t.Fatal(err)
 	}

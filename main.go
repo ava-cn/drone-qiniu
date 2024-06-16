@@ -7,7 +7,7 @@ import (
 
 func main() {
 	c := cli.NewApp()
-	c.Name = "qiniu plugin"
+	c.Name = "qiniu drone plugin"
 	c.Usage = ""
 	c.Version = ""
 
@@ -19,6 +19,7 @@ func main() {
 			Zone:      ctx.String("zone"),
 			Prefix:    ctx.String("prefix"),
 			Dir:       ctx.String("dir"),
+			Parallel:  ctx.Int("parallel"),
 		}
 
 		return p.Exec()
@@ -54,6 +55,11 @@ func main() {
 			Name:    "dir",
 			Usage:   "local dir",
 			EnvVars: []string{"DIR", "PLUGIN_DIR"},
+		},
+		&cli.StringFlag{
+			Name:    "parallel",
+			Usage:   "parallel num",
+			EnvVars: []string{"PARALLEL", "PLUGIN_PARALLEL"},
 		},
 	}
 

@@ -83,6 +83,7 @@ func (u Uploader) UploadDir(zone *storage.Zone, bucket string, keyPrefix string,
 	if err != nil {
 		return
 	}
+	close(as)
 
 	wg.Wait()
 	return err
